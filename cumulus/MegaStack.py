@@ -244,7 +244,7 @@ class MegaStack(object):
                                  % stack.cf_stack_name)
                 self.cf_desc_stacks = self._describe_all_stacks()
 
-    def delete(self, stack_name=None):
+    def delete(self, stack_name=None, force=False):
         """
         Delete all the stacks from CloudFormation.
         Does this in reverse dependency order.
@@ -261,10 +261,13 @@ class MegaStack(object):
                     "Stack %s doesn't exist in CloudFormation, skipping"
                     % stack.name)
             else:
-                confirm = raw_input(
-                    "Confirm you wish to delete stack %s (Name in CF: %s)"
-                    " (type 'yes' if so): "
-                    % (stack.name, stack.cf_stack_name))
+                if force:
+                    confirm = "yes"
+                else:
+                    confirm = raw_input(
+                        "Confirm you wish to delete stack %s (Name in CF: %s)"
+                        " (type 'yes' if so): "
+                        % (stack.name, stack.cf_stack_name))
                 if not confirm == "yes":
                     self.logger.info("Not confirmed, skipping...")
                     continue

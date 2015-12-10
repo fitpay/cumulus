@@ -22,6 +22,10 @@ def main():
         dest="action", required=True,
         help="The action to preform: create, check, update, delete or watch")
     conf_parser.add_argument(
+        "-f", "--force",
+        dest="force", required=False, default=False, action="store_const", const=True,
+        help="If action is delete, this will skip the prompt to delete")
+    conf_parser.add_argument(
         "-l", "--log",
         dest="loglevel", required=False, default="info",
         help="Log Level for output messages,"
@@ -86,7 +90,7 @@ def main():
         the_mega_stack.check(args.stackname)
 
     if args.action == 'delete':
-        the_mega_stack.delete(args.stackname)
+        the_mega_stack.delete(args.stackname, force=args.force)
 
     if args.action == 'update':
         the_mega_stack.update(args.stackname)
